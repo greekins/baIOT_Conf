@@ -1,0 +1,46 @@
+import org.openhab.core.library.types.*
+import org.openhab.core.persistence.*
+import org.openhab.model.script.actions.*
+
+rule "Motion Detected"
+	when Item Motion_Livingroom received update ON or
+		 Item Window_Bedroom received update OPEN
+	then
+	if(Alarm_active.state == ON) {
+		postUpdate(Light_Livingroom, ON)
+		postUpdate(Camera_Livingroom, ON)
+	}
+end
+
+rule "Motion Aggregator"
+	when Item Motion_Livingroom received update or
+	     Item Motion_Livingroom_Sabotage received update
+	then
+	if(Motion_Livingroom.state == "true" && Motion_Livingroom_Sabotage.state == "NO_ERROR") {
+		postUpdate(Motion_Summary, "Bewegung erkannt")
+	} else if(Motion_Livingroom.state == "false" && Motion_Livingroom_Sabotage.state == "NO_ERROR") {
+		postUpdate(Motion_Summary, "ruhig")	
+	} else if(Motion_Livingroom.state == "true" && Motion_Livingroom_Sabotage.state == "SABOTAGE") {
+		postUpdate(Motion_Summary, "Bewegung und Sabotage!")
+	} else if(Motion_Livingroom.state == "false" && Motion_Livingroom_Sabotage.state == "SABOTAGE")  {
+		postUpdate(Motion_Summary, "Sabotage")
+	} else {
+		postUpdate(Motion_Summary, "---")
+	}
+end
+
+rule "Alarm"
+	when Item Motion_Livingroom received update or
+	     Item Motion_Livingroom_Sabotage received update or
+	     Item Window_Bedroom received update
+	then
+	if(Motion_Livingroom.state == "true" || Window_Bedroom.state == "true") {
+		sendCommand(Hue_1, new PercentType(20)
+		sendCommand(Hue_2, new PercentType(50)
+		sendCommand(Alarm_activated, ON)
+	} else {
+		sendCommand(Hue_1, new PercentType(0)
+		sendCommand(Hue_2, new PercentType(0)
+		sendCommand(Alarm_activated, OFF)
+	}
+end

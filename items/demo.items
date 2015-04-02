@@ -1,0 +1,27 @@
+Group All
+Group Overview	(All)
+
+Group OV_Light		"Licht"						(Overview)
+Group OV_Windows	"Fenster"					(Overview)
+Group OV_Security 	"Überwachung"					(Overview)
+
+
+Switch Alarm_active							(OV_Security)
+
+Switch Alarm_activated				
+
+/* Motion */
+String Motion_Livingroom			"Bewegungsmelder [MAP(motion.map):%s]"	{homematic="address=LEQ0797607, channel=1, parameter=MOTION"}
+String Motion_Livingroom_Sabotage 		"Sabotage"				{homematic="address=LEQ0797607, channel=1, parameter=ERROR"}
+String Motion_Summary				"Bewegungsmelder [%s]" (OV_Security)
+
+/* Camera */
+Video Camera					"Kamera"	url="http://192.168.1.15/snapshot.cgi" encoding="mpeg"
+
+/* Lights */
+Dimmer Hue_1					"Hue 1"					{hue="1;brightness"}
+Dimmer Hue_2					"Hue 2"					{hue="2;brightness"}
+
+/* Windows */
+String Window_Bedroom				"Schlafzimmerfenster [MAP(window.map):%s]" 	<contact>		(OV_Windows, Windows)  {homematic="address=LEQ1469091,channel=1,parameter=STATE"}
+Group:Contact:OR(OPEN, CLOSED) 	Windows 	"Open windows [(%d)]"				<contact>		(All)
