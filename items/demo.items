@@ -15,8 +15,7 @@ String Motion_Livingroom			"Bewegungsmelder [MAP(motion.map):%s]"	{homematic="ad
 String Motion_Livingroom_Sabotage 		"Sabotage"				{homematic="address=LEQ0797607, channel=1, parameter=ERROR"}
 String Motion_Summary				"Bewegungsmelder [%s]" (OV_Security)
 
-/* Camera */
-Video Camera					"Kamera"	url="http://192.168.1.15/snapshot.cgi" encoding="mpeg"
+
 
 /* Lights */
 Dimmer Hue_1					"Hue 1"					{hue="1;brightness"}
