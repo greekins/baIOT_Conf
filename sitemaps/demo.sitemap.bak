@@ -1,0 +1,10 @@
+sitemap demo label="Main Menu"
+{
+	Frame label="SmartHome" {
+		Text item=Window_Bedroom
+		Text item=Motion_Summary
+		Slider item=Hue_1
+ 		Slider item=Hue_2
+		Image url="http://192.168.1.15/snapshot.jpg" refresh=2000 visibility=[Alarm_activated==ON]
+	}
+}

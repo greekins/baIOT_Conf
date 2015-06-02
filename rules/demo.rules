@@ -35,12 +35,13 @@ rule "Alarm"
 	     Item Window_Bedroom received update
 	then
 	if(Motion_Livingroom.state == "true" || Window_Bedroom.state == "true") {
-		sendCommand(Hue_1, new PercentType(20)
-		sendCommand(Hue_2, new PercentType(50)
+		sendCommand(Hue_1, ON)
+		sendCommand(Hue_2, ON)
 		sendCommand(Alarm_activated, ON)
+		sendMqttFile("openhab/blob", "http://192.168.1.15/snapshot.jpg")
 	} else {
-		sendCommand(Hue_1, new PercentType(0)
-		sendCommand(Hue_2, new PercentType(0)
+		sendCommand(Hue_1, OFF)
+		sendCommand(Hue_2, OFF)
 		sendCommand(Alarm_activated, OFF)
 	}
 end

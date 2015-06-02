@@ -1,10 +1,21 @@
-sitemap demo label="Main Menu"
+sitemap demo label="Ihr Haus"
 {
-	Frame label="SmartHome" {
-		Text item=Window_Bedroom
-		Text item=Motion_Summary
-		Slider item=Hue_1
- 		Slider item=Hue_2
-		Image url="http://192.168.1.15/snapshot.jpg" refresh=2000 visibility=[Alarm_activated==ON]
-	}
+		
+
+		Group item=Windows {
+			Frame label="Nordseite" {
+			Text item=Window_Bedroom}
+		}
+		Group item=Lights icon="light" {
+			Frame label="Nordseite"{
+			Switch item=Hue_1}
+			Frame label="Südseite" {
+			Switch item=Hue_2}
+		}
+		Group item=Alarms {
+			Frame label="Alarm" {Switch item=Alarm_active}
+			Frame label="Bewegung" {Text item=Motion_Summary}
+			Frame label="Kamera" {Webview url="http://192.168.1.15:80/jpg/1/image.jpg"}
+		}
+ 	
 }

@@ -1,26 +1,19 @@
-Group All
-Group Overview	(All)
-
-Group OV_Light		"Licht"						(Overview)
-Group OV_Windows	"Fenster"					(Overview)
-Group OV_Security 	"Überwachung"					(Overview)
-
-
-Switch Alarm_active							(OV_Security)
-
-Switch Alarm_activated				
+Switch Alarm_active				"Alarm-Modus [MAP(alarm.map):%s]" <siren> (Alarms)
+Switch Alarm_activated
+Group:Switch:AND(ON, OFF) Alarms		"Überwachung [MAP(alarm.map):%s]" <house>
 
 /* Motion */
 String Motion_Livingroom			"Bewegungsmelder [MAP(motion.map):%s]"	{homematic="address=LEQ0797607, channel=1, parameter=MOTION"}
 String Motion_Livingroom_Sabotage 		"Sabotage"				{homematic="address=LEQ0797607, channel=1, parameter=ERROR"}
-String Motion_Summary				"Bewegungsmelder [%s]" (OV_Security)
+String Motion_Summary				"Bewegungsmelder [%s]" <siren>
 
 
 
 /* Lights */
-Dimmer Hue_1					"Hue 1"					{hue="1;brightness"}
-Dimmer Hue_2					"Hue 2"					{hue="2;brightness"}
+Switch Hue_1 "Schlafzimmer [MAP(switch.map):%s]"		(Lights)	{hue="1"}
+Switch Hue_2 "Wohnzimmer [MAP(switch.map):%s]"		(Lights)	{hue="2"}	
+Group:Switch:OR(ON, OFF) Lights			"Lichter [%d an]"
 
 /* Windows */
-String Window_Bedroom				"Schlafzimmerfenster [MAP(window.map):%s]" 	<contact>		(OV_Windows, Windows)  {homematic="address=LEQ1469091,channel=1,parameter=STATE"}
-Group:Contact:OR(OPEN, CLOSED) 	Windows 	"Open windows [(%d)]"				<contact>		(All)
+String Window_Bedroom				"Schlafzimmerfenster [MAP(window.map):%s]" 	<contact>		(Windows)  {homematic="address=LEQ1469091,channel=1,parameter=STATE"}
+Group:String:OR(true, false) 	Windows 	"Fenster [%d offen]"				<contact>
