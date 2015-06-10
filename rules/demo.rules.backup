@@ -2,6 +2,16 @@ import org.openhab.core.library.types.*
 import org.openhab.core.persistence.*
 import org.openhab.model.script.actions.*
 
+rule "Motion Detected"
+	when Item Motion_Livingroom received update ON or
+		 Item Window_Bedroom received update OPEN
+	then
+	if(Alarm_active.state == ON) {
+		postUpdate(Light_Livingroom, ON)
+		postUpdate(Camera_Livingroom, ON)
+	}
+end
+
 rule "Motion Aggregator"
 	when Item Motion_Livingroom received update or
 	     Item Motion_Livingroom_Sabotage received update
@@ -28,9 +38,11 @@ rule "Alarm"
 	if((Motion_Livingroom.state == "true" || Window_Bedroom.state == "true") && Alarm_active.state == ON ) {
 		sendCommand(Hue_1, ON)
 		sendCommand(Hue_2, ON)
+		sendCommand(Alarm_activated, ON)
 		sendMqttFile("openhab/blob", "http://192.168.1.15/snapshot.jpg")
 	} else {
 		sendCommand(Hue_1, OFF)
 		sendCommand(Hue_2, OFF)
+		sendCommand(Alarm_activated, OFF)
 	}
 end
